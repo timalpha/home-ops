@@ -1,0 +1,53 @@
+---
+- name: Create caddy directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: users
+    mode: 0775
+  loop:
+    - "{{ docker_base_dir }}/caddy"
+    - "{{ docker_base_dir }}/caddy/data"
+    - "{{ docker_base_dir }}/caddy/config"
+
+- block:
+    - name: Copy caddy files
+      ansible.builtin.copy:
+        src: "files/caddy/{{ item }}"
+        dest: "{{ docker_base_dir }}/caddy/{{ item }}"
+        owner: "{{ ansible_user }}"
+        group: users
+        mode: 0775
+        remote_src: false
+      loop:
+        - Dockerfile
+    - name: Create caddy docker compose file
+      ansible.builtin.template:
+        src: caddy/docker-compose.yml.j2
+        dest: "{{ docker_base_dir }}/caddy/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: users
+        mode: 0775
+    - name: Create Caddyfile
+      ansible.builtin.template:
+        src: caddy/Caddyfile.j2
+        dest: "{{ docker_base_dir }}/caddy/Caddyfile"
+        owner: "{{ ansible_user }}"
+        group: users
+        mode: 0775
+    - name: Create caddy env file
+      ansible.builtin.template:
+        src: caddy/env.sample.j2
+        dest: "{{ docker_base_dir }}/caddy/.env"
+        owner: "{{ ansible_user }}"
+        group: users
+        mode: 0775
+    - name: Create caddy systemd service file
+      ansible.builtin.template:
+        src: "docker-compose@.service.j2"
+        dest: "/etc/systemd/system/docker-compose@caddy.service"
+        mode: 0644
+      vars:
+        condition_path_is_mount_point: "/"
+  notify: Restart caddy

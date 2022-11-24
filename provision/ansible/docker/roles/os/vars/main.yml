@@ -1,0 +1,38 @@
+---
+os_timezone: "Europe/Stockholm"
+os_packages_install:
+  - apt-transport-https
+  - ca-certificates
+  - containernetworking-plugins
+  - curl
+  - ffmpeg
+  - fzf
+  - gettext
+  - git
+  - nano
+  - ntpdate
+  - podman
+  - psmisc
+  - rclone
+  - software-properties-common
+  - tree
+  - uidmap
+os_packages_remove:
+  - apparmor
+  - apport
+  - byobu
+  - friendly-recovery
+  - landscape-common
+  - lxd-agent-loader
+  - plymouth
+  - plymouth-theme-ubuntu-text
+  - popularity-contest
+  - snapd
+  - sosreport
+  - ubuntu-advantage-tools
+  - ufw
+# -- Base Docker Directory
+docker_base_dir: /opt/docker
+
+nfs_mountpoint: "/mnt/media"
+nfs_src: "10.0.10.10:/mnt/zp0/media"

@@ -1,0 +1,6 @@
+---
+# -- Base Docker Directory
+docker_base_dir: /opt/docker
+
+nfs_mountpoint: "/mnt/media"
+nfs_src: "10.0.10.10:/mnt/zp0/media"

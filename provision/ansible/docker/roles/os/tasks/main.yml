@@ -1,0 +1,46 @@
+---
+- import_tasks: user.yml
+  tags:
+    - user
+
+- import_tasks: locale.yml
+  tags:
+    - locale
+
+- import_tasks: packages.yml
+  tags:
+    - packages
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+
+- import_tasks: network.yml
+  tags:
+    - network
+
+- import_tasks: filesystem.yml
+  tags:
+    - filesystem
+
+- import_tasks: security.yml
+  tags:
+    - security
+
+# Manage NFS media mount
+- import_tasks: nfs.yml
+  tags:
+    - mount
+
+- name: Create default directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: users
+    mode: 0775
+  loop:
+    - "{{ docker_base_dir }}"
+  tags:
+    - always
+
+# Manage Docker installation
+- import_tasks: docker.yml

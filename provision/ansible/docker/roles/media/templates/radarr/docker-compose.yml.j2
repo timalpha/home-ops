@@ -1,0 +1,21 @@
+---
+version: '3'
+services:
+  radarr:
+    image: linuxserver/radarr:4.1.0
+    container_name: radarr
+    restart: unless-stopped
+    ports:
+      - "7878:7878"
+    volumes:
+      - "{{ docker_base_dir }}/radarr/config:/config" # radarr config
+      - "{{ nfs_mountpoint }}/downloads:/downloads" # completed downloads directory
+      - "{{ nfs_mountpoint }}/media/movies:/movies" # move completed to this directory
+    environment:
+      TZ: Europe/Stockholm
+      PUID: 1000
+      PGID: 1000
+networks:
+  default:
+    name: caddy_default
+    external: true

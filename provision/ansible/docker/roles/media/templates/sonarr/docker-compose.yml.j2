@@ -1,0 +1,21 @@
+---
+version: '3'
+services:
+  sonarr:
+    image: linuxserver/sonarr:3.0.9
+    container_name: sonarr
+    restart: unless-stopped
+    ports:
+      - "8989:8989"
+    volumes:
+      - "{{ docker_base_dir }}/sonarr/config:/config" # sonarr config
+      - "{{ nfs_mountpoint }}/downloads:/downloads" # completed downloads directory
+      - "{{ nfs_mountpoint }}/media/tv:/tv" # move completed to this directory
+    environment:
+      TZ: Europe/Stockholm
+      PUID: 1000
+      PGID: 1000
+networks:
+  default:
+    name: caddy_default
+    external: true

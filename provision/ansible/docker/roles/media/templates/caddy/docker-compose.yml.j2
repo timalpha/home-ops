@@ -1,0 +1,17 @@
+---
+version: "3.8"
+services:
+    caddy:
+        build: .
+        container_name: caddy
+        hostname: caddy
+        restart: unless-stopped
+        env_file:
+            - .env
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - "{{ docker_base_dir }}/caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
+            - "{{ docker_base_dir }}/caddy/data:/data"
+            - "{{ docker_base_dir }}/caddy/config:/config"

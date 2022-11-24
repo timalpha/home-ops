@@ -1,0 +1,23 @@
+---
+version: "2.1"
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:4.4.5
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Stockholm
+      - WEBUI_PORT=8090
+    volumes:
+      - "{{ docker_base_dir }}/qbittorrent/config:/config"
+      - "{{ nfs_mountpoint }}/downloads:/downloads"
+    ports:
+      - 8090:8090
+      - 50413:50413
+      - 50413:50413/udp
+    restart: unless-stopped
+networks:
+  default:
+    name: caddy_default
+    external: true

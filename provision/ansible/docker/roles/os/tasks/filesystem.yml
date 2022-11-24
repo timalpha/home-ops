@@ -1,0 +1,29 @@
+---
+- name: Install filesystem tools debian
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+  loop:
+    - nfs-common
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install filesystem tools archlinux
+  pacman:
+    name: "{{ item }}"
+    update_cache: true
+  loop:
+    - nfs-utils
+  when: ansible_distribution == 'Archlinux'
+
+- name: Disable swap at runtime
+  ansible.builtin.command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+- name: Disable swap on boot
+  ansible.posix.mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  loop:
+    - swap
+    - none

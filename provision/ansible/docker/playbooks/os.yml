@@ -1,0 +1,15 @@
+---
+- hosts:
+    - docker
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  pre_tasks:
+    - name: Pausing for 5 seconds...
+      pause:
+        seconds: 5
+  roles:
+    - role: geerlingguy.docker
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - role: os

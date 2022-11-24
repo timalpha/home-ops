@@ -1,0 +1,17 @@
+---
+- name: Check mountpoint exist
+  ansible.builtin.file:
+    path: "{{ nfs_mountpoint }}"
+    state: directory
+    mode: "0775"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- block:
+    - name: Create NFS mount systemd files
+      ansible.builtin.template:
+        src: "templates/nfs/mnt-media.mount.j2"
+        dest: "/etc/systemd/system/mnt-media.mount"
+        mode: 0644
+        remote_src: false
+  notify: Restart nfs-mount

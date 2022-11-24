@@ -1,0 +1,16 @@
+- name: Restart docker-cleanup
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  loop:
+    - docker-cleanup.service
+    - docker-cleanup.timer
+
+- name: Restart nfs-mount
+  ansible.builtin.systemd:
+    name: "mnt-media.mount"
+    state: restarted
+    enabled: true
+    daemon_reload: true

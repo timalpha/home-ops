@@ -1,0 +1,57 @@
+---
+- name: Restart caddy
+  ansible.builtin.systemd:
+    name: "docker-compose@caddy.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart jellyfin
+  ansible.builtin.systemd:
+    name: "docker-compose@jellyfin.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart sonarr
+  ansible.builtin.systemd:
+    name: "docker-compose@sonarr.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart radarr
+  ansible.builtin.systemd:
+    name: "docker-compose@radarr.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart prowlarr
+  ansible.builtin.systemd:
+    name: "docker-compose@prowlarr.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart bazarr
+  ansible.builtin.systemd:
+    name: "docker-compose@bazarr.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+
+- name: Restart qbittorrent
+  ansible.builtin.systemd:
+    name: "docker-compose@qbittorrent.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart home-assistant
+  ansible.builtin.systemd:
+    name: "docker-compose@home-assistant.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true

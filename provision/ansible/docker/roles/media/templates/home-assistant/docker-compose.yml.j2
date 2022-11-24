@@ -1,0 +1,14 @@
+---
+version: "2.1"
+services:
+    home-assistant:
+        container_name: home-assistant
+        image: "ghcr.io/home-assistant/home-assistant:stable"
+        volumes:
+            - "{{ docker_base_dir }}/home-assistant/config:/config"
+            - /etc/localtime:/etc/localtime:ro
+        restart: unless-stopped
+        network_mode: host
+        ports:
+            - 8096:8096
+        restart: unless-stopped

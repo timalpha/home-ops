@@ -1,0 +1,11 @@
+---
+- name: Create docker clean up systemd files
+  ansible.builtin.copy:
+    src: "files/docker/{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: 0644
+    remote_src: false
+  loop:
+    - docker-cleanup.service
+    - docker-cleanup.timer
+  notify: Restart docker-cleanup

@@ -1,0 +1,26 @@
+---
+
+# Manage applications
+- import_tasks: caddy.yml
+  tags: caddy
+
+- import_tasks: jellyfin.yml
+  tags: jellyfin
+
+- import_tasks: sonarr.yml
+  tags: sonarr
+
+- import_tasks: radarr.yml
+  tags: radarr
+
+- import_tasks: prowlarr.yml
+  tags: prowlarr
+
+- import_tasks: bazarr.yml
+  tags: bazarr
+
+- import_tasks: qbittorrent.yml
+  tags: qbittorrent
+
+- import_tasks: home-assistant.yml
+  tags: home-assistant
