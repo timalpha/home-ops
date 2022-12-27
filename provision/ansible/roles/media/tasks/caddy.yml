@@ -10,8 +10,7 @@
     - "{{ docker_base_dir }}/caddy"
     - "{{ docker_base_dir }}/caddy/data"
     - "{{ docker_base_dir }}/caddy/config"
-    - "{{ docker_base_dir }}/caddy/files"
-    - "{{ docker_base_dir }}/caddy/sites"
+    - "{{ docker_base_dir }}/caddy/config/sites"
 
 - block:
     - name: Copy caddy files
@@ -27,7 +26,7 @@
     - name: Copy caddy sites
       ansible.builtin.copy:
         src: "{{ item }}"
-        dest: "{{ docker_base_dir }}/caddy/sites/"
+        dest: "{{ docker_base_dir }}/caddy/config/sites/"
         owner: "{{ ansible_user }}"
         group: users
         mode: 0775
@@ -44,7 +43,7 @@
     - name: Create Caddyfile
       ansible.builtin.template:
         src: caddy/Caddyfile.j2
-        dest: "{{ docker_base_dir }}/caddy/Caddyfile"
+        dest: "{{ docker_base_dir }}/caddy/config/Caddyfile"
         owner: "{{ ansible_user }}"
         group: users
         mode: 0775

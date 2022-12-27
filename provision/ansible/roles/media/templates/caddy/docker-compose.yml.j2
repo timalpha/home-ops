@@ -12,6 +12,6 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - "{{ docker_base_dir }}/caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
             - "{{ docker_base_dir }}/caddy/data:/data"
             - "{{ docker_base_dir }}/caddy/config:/config"
+        entrypoint: /usr/bin/caddy run --adapter caddyfile --config /config/Caddyfile
