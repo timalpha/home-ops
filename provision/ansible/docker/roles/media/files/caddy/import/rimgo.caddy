@@ -1,0 +1,7 @@
+@rimgo {
+	host rimgo.{$MY_DOMAIN}
+}
+
+handle @rimgo {
+	reverse_proxy 10.0.10.8:5002
+}

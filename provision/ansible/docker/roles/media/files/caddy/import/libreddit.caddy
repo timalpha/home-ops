@@ -1,0 +1,7 @@
+@r {
+	host r.{$MY_DOMAIN}
+}
+
+handle @r {
+	reverse_proxy 10.0.10.8:5003
+}

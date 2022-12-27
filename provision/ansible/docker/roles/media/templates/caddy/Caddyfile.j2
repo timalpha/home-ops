@@ -1,5 +1,6 @@
 {
     email {$CLOUDFLARE_EMAIL}
+    skip_install_trust
 }
 (ssl) {
     tls {
@@ -7,103 +8,13 @@
         resolvers 1.1.1.1
     }
 }
-(vlan10) {
-    @block {
-        not remote_ip 10.0.10.0/24
+(localSubnets) {
+    @localSubnets {
+        remote_ip forwarded 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8
     }
-    respond @block 403
 }
-(vlan10_30_wg) {
-    @block {
-        not remote_ip 10.0.0.0/24 10.0.10.0/24 10.0.30.0/24
-    }
-    respond @block 403
-}
-
-jellyfin.{$MY_DOMAIN} {
-    import vlan10_30_wg
-    reverse_proxy 10.0.10.8:8096
+*.{$MY_DOMAIN} {
     import ssl
-}
-
-ha.{$MY_DOMAIN} {
-    import vlan10_30_wg
-    reverse_proxy 10.0.10.6:8123
-    import ssl
-}
-
-esphome.{$MY_DOMAIN} {
-    import vlan10_30_wg
-    reverse_proxy 10.0.10.6:6052
-    import ssl
-}
-dav.{$MY_DOMAIN} {
-    import vlan10_30_wg
-    reverse_proxy baikal:80
-    import ssl
-}
-
-qb.{$MY_DOMAIN} {
-    import vlan10
-    reverse_proxy qbittorrent:8090
-    import ssl
-}
-
-w.{$MY_DOMAIN} {
-    reverse_proxy whoogle:5000
-    import ssl
-}
-
-r.{$MY_DOMAIN} {
-    reverse_proxy libreddit:8080
-    import ssl
-}
-
-translate.{$MY_DOMAIN} {
-    reverse_proxy libretranslate:5000
-    import ssl
-}
-
-sonarr.{$MY_DOMAIN} {
-    import vlan10
-    reverse_proxy sonarr:8989
-    import ssl
-}
-
-radarr.{$MY_DOMAIN} {
-    import vlan10
-    reverse_proxy radarr:7878
-    import ssl
-}
-
-prowlarr.{$MY_DOMAIN} {
-    import vlan10
-    reverse_proxy prowlarr:9696
-    import ssl
-}
-
-bazarr.{$MY_DOMAIN} {
-    import vlan10
-    reverse_proxy bazarr:6767
-    import ssl
-}
-
-code.{$MY_DOMAIN} {
-    import vlan10_30_wg
-    reverse_proxy code-server:8443
-    import ssl
-}
-
-y.{$MY_DOMAIN} {
-    import vlan10_30_wg
-    reverse_proxy invidious:3000
-    import ssl
-}
-
-vikunja.{$MY_DOMAIN} {
-    reverse_proxy /api/* vikunja-api:3456
-    reverse_proxy /.well-known/* vikunja-api:3456
-    reverse_proxy /dav/* vikunja-api:3456
-    reverse_proxy vikunja:80
-    import ssl
+    import localSubnets
+    import import/*.caddy
 }

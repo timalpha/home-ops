@@ -1,0 +1,7 @@
+@dav {
+	host dav.{$MY_DOMAIN}
+}
+
+handle @dav {
+	reverse_proxy 10.0.10.8:5009
+}
