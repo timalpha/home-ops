@@ -26,14 +26,14 @@
         - Dockerfile
     - name: Copy caddy import files
       ansible.builtin.copy:
-        src: "files/caddy/import/{{ item }}"
-        dest: "{{ docker_base_dir }}/caddy/import/{{ item }}"
+        src: "{{ item }}"
+        dest: "{{ docker_base_dir }}/caddy/import/"
         owner: "{{ ansible_user }}"
         group: users
         mode: 0775
         remote_src: false
       with_fileglob:
-        - "*.caddy"
+        - "files/caddy/import/*.caddy"
     - name: Create caddy docker compose file
       ansible.builtin.template:
         src: caddy/docker-compose.yml.j2
