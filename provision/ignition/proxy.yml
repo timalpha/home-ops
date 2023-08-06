@@ -4,7 +4,7 @@ passwd:
   users:
     - name: tim
       ssh_authorized_keys:
-        - ssh-rsa ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkeHcaEF74Hkn5mlMmEG1UA9a9W/joLmBKA588b6mkcNw3yZFbPJ4J7fSHIolkcsVZra0tWyMIjVdsLUmJjAU8ik6Cy2t9NCKyuTeEnOp1zPDUqFUIpkNzWKwo48cMqPVCpiJVkqZzFQfCyxZqD3XUbREFMXpfz5sX8jr6xtOs9c7OnrrWoTz+Wiyrh2Zli/V+q5d+0h/naRpyt4zw9XMYvkUzWBfYoJdFFHDr8VIWYYaY/fAGNfFdMakc4b4x7KTT1t4azrTBXYwGP4v0LxnAbklCFn8p8u2V2Y9r3e1S5O3iKjv2r9DLu+16KpVjCXWdqn/FP0q06D0Pn/vqqNEd
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkeHcaEF74Hkn5mlMmEG1UA9a9W/joLmBKA588b6mkcNw3yZFbPJ4J7fSHIolkcsVZra0tWyMIjVdsLUmJjAU8ik6Cy2t9NCKyuTeEnOp1zPDUqFUIpkNzWKwo48cMqPVCpiJVkqZzFQfCyxZqD3XUbREFMXpfz5sX8jr6xtOs9c7OnrrWoTz+Wiyrh2Zli/V+q5d+0h/naRpyt4zw9XMYvkUzWBfYoJdFFHDr8VIWYYaY/fAGNfFdMakc4b4x7KTT1t4azrTBXYwGP4v0LxnAbklCFn8p8u2V2Y9r3e1S5O3iKjv2r9DLu+16KpVjCXWdqn/FP0q06D0Pn/vqqNEd
       groups:
         - wheel
         - sudo
