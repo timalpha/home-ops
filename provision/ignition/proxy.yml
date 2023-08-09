@@ -2,12 +2,9 @@ variant: fcos
 version: 1.4.0
 passwd:
   users:
-    - name: tim
+    - name: caddy
       ssh_authorized_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkeHcaEF74Hkn5mlMmEG1UA9a9W/joLmBKA588b6mkcNw3yZFbPJ4J7fSHIolkcsVZra0tWyMIjVdsLUmJjAU8ik6Cy2t9NCKyuTeEnOp1zPDUqFUIpkNzWKwo48cMqPVCpiJVkqZzFQfCyxZqD3XUbREFMXpfz5sX8jr6xtOs9c7OnrrWoTz+Wiyrh2Zli/V+q5d+0h/naRpyt4zw9XMYvkUzWBfYoJdFFHDr8VIWYYaY/fAGNfFdMakc4b4x7KTT1t4azrTBXYwGP4v0LxnAbklCFn8p8u2V2Y9r3e1S5O3iKjv2r9DLu+16KpVjCXWdqn/FP0q06D0Pn/vqqNEd
-      groups:
-        - wheel
-        - sudo
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIACYUGrZXZ0MoaXrtiZ/aeJeqNe9ioNd3SMEZq1noQ4f
 systemd:
   units:
     - name: postinst.service
@@ -27,10 +24,8 @@ systemd:
         [Service]
         Type=oneshot
         RemainAfterExit=yes
-        ExecStart=/usr/bin/sed -i 's/#DNSSEC=no/DNSSEC=yes/g' /etc/systemd/resolved.conf
-        ExecStart=/usr/bin/systemctl restart systemd-resolved
-        ExecStart=/usr/bin/rpm-ostree install firewalld
-        ExecStart=/usr/bin/rpm-ostree override remove cifs-utils samba-common-libs samba-client-libs libsmbclient libwbclient samba-common sssd-krb5-common sssd-ipa sssd-nfs-idmap sssd-ldap sssd-client sssd-ad sssd-common sssd-krb5 sssd-common-pac
+        ExecStart=/usr/bin/rpm-ostree install firewalld qemu-guest-agent
+        ExecStart=/usr/bin/rpm-ostree override remove cifs-utils samba-common-libs samba-client-libs libsmbclient libwbclient samba-common sssd-krb5-common sssd-ipa sssd-nfs-idmap sssd-ldap sssd-client sssd-ad sssd-common sssd-krb5 sssd-common-pac docker toolbox
         ExecStart=/usr/bin/sed -i 's/nullok//g' /etc/pam.d/system-auth
         ExecStart=/usr/bin/curl https://raw.githubusercontent.com/Kicksecure/security-misc/master/etc/modprobe.d/30_security-misc.conf -o /etc/modprobe.d/30_security-misc.conf
         ExecStart=/usr/bin/curl https://raw.githubusercontent.com/Kicksecure/security-misc/master/etc/sysctl.d/30_security-misc.conf -o /etc/sysctl.d/30_security-misc.conf
@@ -44,21 +39,10 @@ systemd:
         ExecStart=/usr/bin/mkdir -p /etc/systemd/system/irqbalance.service.d
         ExecStart=/usr/bin/curl https://gitlab.com/divested/brace/-/raw/master/brace/usr/lib/systemd/system/irqbalance.service.d/99-brace.conf -o /etc/systemd/system/irqbalance.service.d/99-brace.conf
         ExecStart=/usr/bin/mkdir -p /etc/systemd/system/sshd.service.d
-        ExecStart=/usr/bin/curl https://raw.githubusercontent.com/GrapheneOS/infrastructure/main/systemd/system/sshd.service.d/limits.conf -o /etc/systemd/system/sshd.service.d/limits.conf
+        ExecStart=/usr/bin/curl https://raw.githubusercontent.com/GrapheneOS/infrastructure/main/systemd/system/sshd.service.d/local.conf -o /etc/systemd/system/sshd.service.d/local.conf
         ExecStart=/bin/touch /var/lib/%N.stamp
         ExecStart=/bin/systemctl --no-block reboot
 
-        [Install]
-        WantedBy=multi-user.target
-    - name: setsebool.service
-      enabled: true
-      contents: |
-        [Service]
-        Type=oneshot
-        ExecStart=/usr/sbin/setsebool container_use_cephfs off
-        ExecStart=/usr/sbin/setsebool virt_use_nfs off
-        ExecStart=/usr/sbin/setsebool virt_use_samba off
-        RemainAfterExit=yes
         [Install]
         WantedBy=multi-user.target
     - name: fstrim.timer
@@ -67,6 +51,9 @@ systemd:
       enabled: true
     - name: sshd.service
       enabled: true
+    - name: rpm-ostree-countme.timer
+      enabled: false
+      mask: true
 storage:
   files:
     - path: /etc/ssh/sshd_config.d/10-custom.conf
@@ -89,7 +76,7 @@ storage:
           [[updates.periodic.window]]
           days = [ "Sat", "Sun" ]
           start_time = "0:00"
-          length_minutes = 60
+          length_minutes = 120
     - path: /etc/security/limits.d/30-disable-coredump.conf
       overwrite: true
       contents:
@@ -101,9 +88,12 @@ storage:
         inline: |
           GSSAPIAuthentication no
           VerifyHostKeyDNS yes
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: |
+          proxy
   links:
-    - path: /etc/localtime
-      target: ../usr/share/zoneinfo/Europe/Stockholm
     - path: /etc/systemd/system/kdump.service.target
       target: /dev/null
 kernel_arguments:
